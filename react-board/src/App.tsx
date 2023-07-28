@@ -5,7 +5,7 @@ import axios from "axios";
 import SignUp from "./views/Authentication/SignUp";
 import Authentication from "./views/Authentication";
 
-// 2023.07.27 Conclusion. function App() {} ===> 맨 아래에서, export default App(); 이런 형식과 아래 형식은 동일하다.
+// 2023.07.27 Conclusion. function App_react_redux() {} ===> 맨 아래에서, export default App_react_redux(); 이런 형식과 아래 형식은 동일하다.
 export default function App() {
 
     // => views/SignUp/index.tsx 만들기 전 임시로 진행.
@@ -35,17 +35,17 @@ export default function App() {
 
     // => views/SignUp/index.tsx 에서 처리한다.
 
-  return (
-      <Authentication />
-      // 2023.07.27 Conclusion. Authentication/SignUp.tsx 만들기 전 임시 진행.
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //       {/*<p>{connection}</p>*/}
-    //   </header>
-    //     <SignUp />
-    // </div>
-  );
+    return (
+        <Authentication />
+        // 2023.07.27 Conclusion. Authentication/SignUp.tsx 만들기 전 임시 진행.
+        // <div className="App_react_redux">
+        //   <header className="App_react_redux-header">
+        //     <img src={logo} className="App_react_redux-logo" alt="logo" />
+        //       {/*<p>{connection}</p>*/}
+        //   </header>
+        //     <SignUp />
+        // </div>
+    );
 }
 
-// export default App;
+// export default App_react_redux;

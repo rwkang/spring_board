@@ -1,6 +1,17 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import axios from "axios";
-import {Box, Button, Card, CardActions, CardContent, TextField} from "@mui/material";
+import {
+    Box,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    TextField
+} from "@mui/material";
+import FormControlContext from "@mui/material/FormControl/FormControlContext";
 
 
 export default function SignUp(){

@@ -29,6 +29,14 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // 2023.07.28 Added. JWC(JSON Web Token) 주입.
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1' // 여기랑 아래 group: 처리랑 동일.
+    //implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+    //implementation 'io.jsonwebtoken:jjwt-api:0.11.5' // 2023.07.28 Conclusion. 이건 안 됨.
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'

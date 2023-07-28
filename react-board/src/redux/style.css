@@ -1,0 +1,11 @@
+/* 2023.07.28 react-redux 실험을 위한 임시 style.css */
+
+#container, #container div {
+    border: 5px solid red;
+    margin: 10px;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
