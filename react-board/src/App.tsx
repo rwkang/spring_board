@@ -4,6 +4,8 @@ import './App.css';
 import axios from "axios";
 import SignUp from "./views/Authentication/SignUp";
 import Authentication from "./views/Authentication";
+import {log} from "util";
+import MainLayout from "./views/layouts";
 
 // 2023.07.27 Conclusion. function App_react_redux() {} ===> 맨 아래에서, export default App_react_redux(); 이런 형식과 아래 형식은 동일하다.
 export default function App() {
@@ -35,8 +37,9 @@ export default function App() {
 
     // => views/SignUp/index.tsx 에서 처리한다.
 
+    console.log("==========> App.tsx")
     return (
-        <Authentication />
+        <MainLayout /> // <=== <Authentication />
         // 2023.07.27 Conclusion. Authentication/SignUp.tsx 만들기 전 임시 진행.
         // <div className="App_react_redux">
         //   <header className="App_react_redux-header">
