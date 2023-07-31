@@ -10,6 +10,13 @@ import java.util.Date; // [import java.sql.Date]가 아님에 주의.
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+// 2023.07.30 Conclusion. JWT 정리
+// JWT: 전자 서명이 된 토큰, JSON 형태로 구성된 토큰.
+// {header}.{payload}.{signature} => 토큰은 [.]을 기준으로 3 부분으로 나누어져 있다.
+
+// header: typ (해당 토큰의 타입), alq: (토큰을 서명하기 위해 사용된 해시 알고리즘)
+// payload: sub (해당 토큰의 주인), iat: (토큰이 발행된 시간), exp: (토큰이 만료되는 시간)
+
 @Service
 public class TokenProvider {
 
@@ -34,8 +41,9 @@ public class TokenProvider {
                 .compact();
     }
 
-    // JWT 검증 == 복호화
-    public String decrypt(String token) {
+    // JWT 검증 == 복호화 => 이게 나중에 저쪽, /filter/JwtAuthenticationFilter.java.doFilterInternal()에서 사용된다.
+    public String validate(String token) { // 강의에서는 validate 펑션명을 사용했다.
+    //public String decrypt(String token) { // tabnine에서는 decrypt 펑션명을 추천한다.
         // 파라메터로 받은 toker key를 사용하여, 복호화 한다.
         Claims claims = Jwts.parser().setSigningKey(TOKEN_PREFIX).parseClaimsJws(token).getBody();
 

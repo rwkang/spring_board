@@ -34,7 +34,7 @@ public class AuthService {
         }
 
         if (!password.equals(passwordConfirmation))
-            return ResponseDto.setFailed("비빌 번호가 틀립니다. 다시 확인하시오!");
+            return ResponseDto.setFailed("비밀 번호를 다시 확인하시오!");
 
         // 1. Client.클라이언트에서 회원 가입한 모든 정보를, [UserEntity] 생성자.UserEntity()를 활용하여, "userEntity"에 담는다.
         UserEntity userEntity = new UserEntity(requestDto);
@@ -100,7 +100,8 @@ public class AuthService {
         userEntity.setPassword(""); // 비밀 번호는 Client.클라이언트 쪽으로 넘어갈 때, "비워서" 넘어가게 해야 한다
 
         String token = tokenProvider.generateToken(email);//        int expiration = 60 * 60 * 24 * 7; //
-        int expiration = 60 * 60 * 24 * 30; //
+//        int expiration = 60 * 60 * 24 * 30; //
+        int expiration = 60 * 60 * 1000; // 1시간
 
         SignInResponseDto signInResponseDto = new SignInResponseDto(token, expiration, userEntity);
         System.out.println("=====> AuthService.serviceSignIn.signInResponseDto: " + signInResponseDto.toString());
