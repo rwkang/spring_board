@@ -1,6 +1,8 @@
 package shop.onekorea.spring_board.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import shop.onekorea.spring_board.dto.ResponseDto;
@@ -18,6 +20,9 @@ public class AuthService {
 
     @Autowired private UserRepository userRepository;
     @Autowired private TokenProvider tokenProvider;
+
+    // 2023.08.31 Added. Backend Security - 비밀 번호 암호화
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public ResponseDto<?> serviceSighUp(SignUpRequestDto requestDto) {
         String email = requestDto.getEmail();
@@ -38,6 +43,11 @@ public class AuthService {
 
         // 1. Client.클라이언트에서 회원 가입한 모든 정보를, [UserEntity] 생성자.UserEntity()를 활용하여, "userEntity"에 담는다.
         UserEntity userEntity = new UserEntity(requestDto);
+
+        // 2023.08.01 Added. 비밀 번호 암호화
+        String encodedPassword = passwordEncoder.encode(password);
+        userEntity.setPassword(encodedPassword);
+        // => board_spring DB user table password 컬럼 넓이 수정: 기존 20 => 수정 200
 
         // 2. 위에서 "userEntity"에 담은 것을, Repository interface의 각각의 "메소드"로 전달한다.
         //    단, "Repository"는 반드시 "try ~ catch" 구문으로 사용해야 한다.
@@ -74,26 +84,52 @@ public class AuthService {
 //        }
 
         UserEntity userEntity = null;
+
+        // 2023.08.01 Conclusion. SignUp.회원 가입 Request 정보를 받아서, password.비밀 번호를 암호화한 후에는,
+        // 위의 email+password 조합을 쓸 수 없고, 'email' 1개로 검색하여, 해당 하는 정보를 가져온다.
+        // 사실은 이런 로직을 나는 처음부터 생각했었기 때문에, 저쪽 아래에서도 이와 같이 "email"을 먼저 확인하고, "password"를 확인하는 방식으로 처리했었다.
+
+        try {
+            userEntity = userRepository.findByEmail(email);
+            // email check
+            if (userEntity == null) return ResponseDto.setFailed("등록된 이메일이 않네요. 이메일을 다시 확인하시오!");
+            // password check
+            if (!passwordEncoder.matches(password, userEntity.getPassword()))
+                return ResponseDto.setFailed("비빌 번호가 맞지 않네요. 비밀 번호를 다시 확인하시오!비�� ��호가 ��지 않��요. �����");
+        } catch (Exception e) {
+            return ResponseDto.setFailed(e.getMessage()); // Database Error
+        }
+
+        System.out.println("=====> AuthService.serviceSignIn.userEntity: " + userEntity.toString());
+
+
+        /* // 2023.08.31 Added. 아래 내용을 위와 같이 변경해야 한다. password.비밀 번호를 암호화한 후.
+
+        // 20230.07.27 Conclusion. 강의에서는 "email+password" 조합으로 검색하여 처리하였으나, 나는 먼저 "email" 만으로 처리한다.
         try {
             // 먼저 "userEntity.사원 정보" 모두를, "email"을 기준으로 받아서, "password" 정보를 "비워" 둔다. ***중요***
             userEntity = userRepository.findById(email).get();
             if (userEntity == null) return ResponseDto.setFailed("등록된 이메일이 않네요. 이메일을 다시 확인하시오!");
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseDto.setFailed(e.getMessage());
         }
         System.out.println("=====> AuthService.serviceSignIn.userEntity: " + userEntity.toString());
 
         // 사실 여기서는 "password"만 확인해도 되는데...
         try {
+            // boolean isExisted = userRepository.findByEmailAndPassword(email, password); // NG
+            // boolean isExisted = userRepository.getByPassword(password); // NG
+            // boolean isExisted = userRepository.findByPassword(password); // NG
+
             // boolean isExisted = userRepository.existsByEmailAndPassword(email, password); OK
-//            boolean isExisted = userRepository.findByEmailAndPassword(email, password); // NG
-//            boolean isExisted = userRepository.getByPassword(password); // NG
-             boolean isExisted = userRepository.existsByPassword(password); // OK
-//             boolean isExisted = userRepository.findByPassword(password); // NG
-            if (!isExisted) return ResponseDto.setFailed("비빌 번호가 맞지 않네요. 비밀 번호를 다시 확인하시오!");
+
+             boolean isExisted = userRepository.existsByPassword(password); // OK // 비밀 번호 암호화 후 사용 불가.
+             if (!isExisted) return ResponseDto.setFailed("비빌 번호가 맞지 않네요. 비밀 번호를 다시 확인하시오!"); // 비밀 번호 암호화 후 사용 불가.
+
         } catch (Exception e) {
            return ResponseDto.setFailed(e.getMessage());
         }
+        */
 
         System.out.println("=====> AuthService.serviceSignIn.password: " + password);
 

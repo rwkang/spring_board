@@ -22,11 +22,12 @@ public class BoardEntity {
     private String image;
     private String video;
     private String file;
-    private String write;
-    private String writeProfile;
-    private String writeNickname;
-    private int click_count;
+    private String writer;
+    private String writerProfile;
+    private String writerNickname;
+    private int clickCount;
     private int thumbsUpCount;
     private int commentCount;
     private String updated;
+    private String created;
 }

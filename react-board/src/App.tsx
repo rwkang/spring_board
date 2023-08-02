@@ -5,7 +5,7 @@ import axios from "axios";
 import SignUp from "./views/Authentication/SignUp";
 import Authentication from "./views/Authentication";
 import {log} from "util";
-import MainLayout from "./views/layouts";
+import MainLayout from "./views/layouts/MainLayout";
 
 // 2023.07.27 Conclusion. function App_react_redux() {} ===> 맨 아래에서, export default App_react_redux(); 이런 형식과 아래 형식은 동일하다.
 export default function App() {

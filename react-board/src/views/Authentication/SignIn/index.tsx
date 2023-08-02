@@ -19,8 +19,6 @@ export default function SignIn(props: Props) {
     // npm install cookie 후
     const [cookies, setCookies] = useCookies();
 
-    const [keyEnter, setKeyEnter] = useState<string>();
-
     // npm install zustand 후
     // /stores/user.store.js and /stores/index.ts 작성 후
     // store는 중괄호{}를 사용함에 주의
@@ -30,9 +28,9 @@ export default function SignIn(props: Props) {
     // 2023.07.30 Added. [SignUp.회원 가입 화면]에서 [SignIn.로그인 화면]으로 왔다 갔다 처리.
     const {setAuthView} = props;
 
-    // 2023.07.30 Added. Enter엔터키로 "signInHandle()" 클릭 이벤트 발생 시키기.
+    // 2023.07.30 Added. Enter.엔터키로 "signInHandle()" 클릭 이벤트 발생 시키기.
     // https://velog.io/@yena1025/React-Typescript-%EC%9D%B8%ED%92%8B%EC%B0%BD-%EC%97%94%ED%84%B0%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EA%B5%AC%ED%98%84-%EC%A2%85%EA%B2%B0
-    const [keyword, setKeyword] = useState("");
+    const [keyword, setKeyword] = useState<string>("");
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             signInHandler();
@@ -60,9 +58,8 @@ export default function SignIn(props: Props) {
         // axios. 원래 여기부터 "axios" 구문이다.
 
         const signInResponse = await signInApi(data);
-        console.log("/src/views/Authentication/SignIn/index.tsx.signInResponse: " + JSON.stringify(signInResponse));
-        // console.log("signInResponse.result.toString: ", signInResponse.result.toString());
-        // console.log("signInResponse.result: ", JSON.stringify(signInResponse.result));
+        // console.log("/src/views/Authentication/SignIn/index.tsx.JSON.stringify(signInResponse): " + JSON.stringify(signInResponse));
+        // console.log("/src/views/Authentication/SignIn/index.tsx.JSON.stringify(signInResponse.data): " + JSON.stringify(signInResponse.data));
         if (!signInResponse) {
             alert("로그인 실패!");
             return;
@@ -72,12 +69,76 @@ export default function SignIn(props: Props) {
             return;
         }
 
-        const { token, expiration, userEntity } = signInResponse.result;
+        // 2023.08.01 Conclusion. ***** 특별히 주의: 아래 단계별 데이터를 정확히 알고 있어야 한다. *****
 
+        /* 1. signInResponse
+        =>
+        signInResponse = {
+            "result":true,
+            "message":"Sign In Success!!!",
+            "data": {
+                "token":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyd2thbmdAZ21haWwuY29tIiwiaWF0IjoxNjkwODQ3MTcxLCJleHAiOjE2OTA4NTA3NzF9.M6FbnAc8loFbLj_TjLyAptEQI62YqDmuEzwevm6cMuMMt4oBub-ox2dDs1j3si32MQ2FFlUKz8ROuqvvAt1-qQ",
+                "expiration":3600000,
+                "userEntity":{
+                    "email":"rwkang@gmail.com",
+                    "password":"",
+                    "nickname":"clarus",
+                    "phoneNo":"010-1111-2222",
+                    "address":"대한 민국 서울시 강서구 null",
+                    "profile":null,
+                    "updated":"2023-07-31T22:09:50.000+00:00"
+                }
+            }
+        }
+        */
+
+        /* 2. signInResponse.result
+        =>
+        boolean = true or false
+        */
+
+        /* 3. signInResponse.data
+        =>
+        signInResponse.data = {
+            "token":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyd2thbmdAZ21haWwuY29tIiwiaWF0IjoxNjkwODQ3MTcxLCJleHAiOjE2OTA4NTA3NzF9.M6FbnAc8loFbLj_TjLyAptEQI62YqDmuEzwevm6cMuMMt4oBub-ox2dDs1j3si32MQ2FFlUKz8ROuqvvAt1-qQ",
+            "expiration":3600000,
+            "userEntity":{
+                "email":"rwkang@gmail.com",
+                "password":"",
+                "nickname":"clarus",
+                "phoneNo":"010-1111-2222",
+                "address":"대한 민국 서울시 강서구 null",
+                "profile":null,
+                "updated":"2023-07-31T22:09:50.000+00:00"
+            }
+        }
+        */
+
+        /* 4. signInResponse.data.userEntity
+        =>
+        signInResponse.data.useEntity = {
+            "email":"rwkang@gmail.com",
+            "password":"",
+            "nickname":"clarus",
+            "phoneNo":"010-1111-2222",
+            "address":"대한 민국 서울시 강서구 null",
+            "profile":null,
+            "updated":"2023-07-31T22:09:50.000+00:00"
+        }
+        */
+
+        // const { token, expiration, userEntity } = signInResponse;
+        // const { token, expiration, userEntity } = signInResponse.result;
+        const { token, expiration, userEntity } = signInResponse.data;
+
+        // 2023.07.31 Conclusion. 각각의 항목(token, userEntity)에, expires.만료 시간 옵션을 설정한다.
         setCookies('token', token, { expires: new Date(Date.now() + expiration) }); // 탭나인
-        setCookies('userEntity', signInResponse.data.userEntity, { expires: new Date(Date.now() + expiration ) });
+        setCookies('userEntity', userEntity, { expires: new Date(Date.now() + expiration ) });
 
-        console.log("signInResponse.data.toString: ", signInResponse.result.toString());
+        // console.log("/react-board/src/views/Authentication/SignIn/index.tsx.JSON.stringify(signInResponse.data): ", JSON.stringify(signInResponse.data));
+        // console.log("/react-board/src/views/Authentication/SignIn/index.tsx.token: ", token);
+        // console.log("/react-board/src/views/Authentication/SignIn/index.tsx.expiration: ", expiration);
+        // console.log("/react-board/src/views/Authentication/SignIn/index.tsx.JSON.stringify(userEntity): ", JSON.stringify(userEntity));
         // console.log("signInResponse.data.nickname: ", signInResponse.data.nickname);
 
         setUser(userEntity);

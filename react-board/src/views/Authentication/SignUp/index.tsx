@@ -12,6 +12,7 @@ import {
     TextField
 } from "@mui/material";
 import FormControlContext from "@mui/material/FormControl/FormControlContext";
+import {useUserStore} from "../../../stores";
 import Typography from "@mui/material/Typography";
 import {signUpApi} from "../../../apis";
 
@@ -29,10 +30,16 @@ export default function SignUp(props: Props){
     const [address, setAddress] = useState<string>('');
     const [addressDetail, setAddressDetail] = useState<string>('');
 
+    // npm install zustand 후
+    // /stores/user.store.js and /stores/index.ts 작성 후
+    // store는 중괄호{}를 사용함에 주의
+    // 여기 store에 저장하게 되면, state를 [외부]에서 관리하게 된는 것이다. 위의 state 들은 [내부]에서만 관리하는 것임.
+    const {user, setUser} = useUserStore();
+
     // 2023.07.30 Added. [SignUp.회원 가입 화면]에서 [SignIn.로그인 화면]으로 왔다 갔다 처리.
     const {setAuthView} = props;
 
-    // 2023.07.30 Added. Enter엔터키로 "signInHandle()" 클릭 이벤트 발생 시키기.
+    // 2023.07.30 Added. Enter.엔터키로 "signInHandle()" 클릭 이벤트 발생 시키기.
     // https://velog.io/@yena1025/React-Typescript-%EC%9D%B8%ED%92%8B%EC%B0%BD-%EC%97%94%ED%84%B0%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EA%B5%AC%ED%98%84-%EC%A2%85%EA%B2%B0
     const [keyword, setKeyword] = useState<string>("");
 

@@ -19,6 +19,7 @@ export default function Authentication() { // 이런 한 줄 형식으로 처리
                 </Box>
                 <Box flex={1} display={"flex"} justifyContent={"center"} alignItems={"center"}>
                     {authView? <SignUp setAuthView={setAuthView}/> : <SignIn setAuthView={setAuthView}/>}
+                    {/*<SignUp /> <SignIn />*/}
                 </Box>
             </Box>
         </>

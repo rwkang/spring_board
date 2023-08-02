@@ -18,6 +18,6 @@ import javax.persistence.Table;
 public class PopularSearchEntity {
     @Id
     private String term;
-    private int SearchCount;
+    private int searchCount;
     private String updated;
 }
