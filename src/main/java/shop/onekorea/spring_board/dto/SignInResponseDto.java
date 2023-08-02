@@ -9,7 +9,9 @@ import shop.onekorea.spring_board.entity.UserEntity;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignInResponseDto {
+
     private String token;
     private int expiration;
     private UserEntity userEntity;
+
 }

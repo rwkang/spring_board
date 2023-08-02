@@ -16,8 +16,10 @@ import javax.persistence.Table;
 @Entity(name = "PopularSearchEntity")
 @Table(name = "popular_search")
 public class PopularSearchEntity {
+
     @Id
     private String term;
     private int searchCount;
     private String updated;
+
 }

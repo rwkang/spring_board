@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import logo from './logo.svg';
+import React, {useEffect} from "react";
+import logo from "./logo.svg";
 import './App.css';
 import axios from "axios";
 import SignUp from "./views/Authentication/SignUp";

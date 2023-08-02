@@ -16,6 +16,7 @@ import javax.persistence.Table;
 @Entity(name = "ThumbsUp")
 @Table(name = "thumbs_up")
 public class ThumbsUpEntity {
+
     @Id
     private int id;
     private int boardId;
@@ -23,4 +24,5 @@ public class ThumbsUpEntity {
     private String thumbsUpperProfile;
     private String thumbsUpperNickname;
     private String updated;
+
 }

@@ -25,5 +25,4 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     //public List<BoardEntity> findByBoardTitleContains(String title); // 15강
     // => SELECT * FROM board WHERE board_title LIKE '%?%';
 
-
 }

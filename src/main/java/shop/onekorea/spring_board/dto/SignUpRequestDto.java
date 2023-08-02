@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignUpRequestDto { // 회원 가입
+
     private String email;
     private String password;
     private String passwordConfirmation;

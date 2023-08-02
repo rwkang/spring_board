@@ -31,16 +31,16 @@ public class SpringBoardApplication {
         System.out.println("=====> SpringBoardAppkication.main.shop.onekorea.spring_board");
     }
 
-    // 2023.07.28 Added. SignIn
-    @Bean
-    public WebMvcConfigurer corsConfigurer() { // import org.springframework.web.
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOriginPatterns();
-            }
-        };
-    }
+//    // 2023.07.28 Added. React.리엑트 실행했을 때, 3000번 포트에서 이쪽 8000번 포트와 교신할 수 있도록 "CORS" 설정.
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() { // import org.springframework.web.
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**").allowedOriginPatterns();
+//            }
+//        };
+//    }
 
     //@CrossOrigin(originPatterns = "http://localhost:3000")
     // 2023.07.26 Modified. 각각의 Controller에서 처리할 것이 아니라, Project.main() 파일, SpringBootApplication에서 바로 처리한다.
